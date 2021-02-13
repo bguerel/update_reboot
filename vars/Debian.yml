@@ -1,0 +1,9 @@
+---
+# Install dependencies to check if a reboot is required after update.
+update_reboot_dependencies_pkgs:
+  - python3-apt
+  - needrestart
+
+# If yes, remove unused dependency packages for all module states except build-dep.
+update_reboot_debian_autoremove: no
+...

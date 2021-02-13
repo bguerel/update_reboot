@@ -1,0 +1,7 @@
+---
+# Install dependencies to check if a reboot is required after update.
+update_reboot_dependencies_pkgs: []
+
+# Install only Suse Security patches.
+update_reboot_suse_security_patches: false
+...

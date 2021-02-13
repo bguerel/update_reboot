@@ -1,0 +1,26 @@
+---
+- name: Load variables specific for OS family.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+  tags: [ 'update_reboot' ]
+
+- name: Setup packages
+  include_tasks: packages.yml
+  tags: [ 'update_reboot', 'setup_pkgs' ]
+
+- name: Update RedHat.
+  include_tasks: update_redhat.yml
+  when: (ansible_os_family == "RedHat")
+  tags: [ 'update_reboot' ]
+
+- name: Update Debian.
+  include_tasks: update_debian.yml
+  when: (ansible_os_family == "Debian")
+  tags: [ 'update_reboot' ]
+
+- name: Update Suse.
+  include_tasks: update_suse.yml
+  when: (ansible_os_family == "Suse")
+  tags: [ 'update_reboot' ]
+...

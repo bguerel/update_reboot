@@ -1,0 +1,40 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: bguerel
+  description: Update and Reboot
+  company: BG
+  license: "license (MIT)"
+  min_ansible_version: 2.9
+  platforms:
+    - name: EL
+      versions:
+        - 8
+        - 7
+    - name: Fedora
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - Bullseye
+        - Buster
+        - Stretch
+    - name: Ubuntu
+      versions:
+        - Focal
+        - Bionic
+    - name: SLES
+      versions:
+        - 15
+        - 12
+    - name: OpenSUSE
+      versions:
+        - all
+  galaxy_tags:
+    - update
+    - reboot
+    - system
+    - security
+    - patch
+...

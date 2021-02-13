@@ -1,0 +1,11 @@
+---
+# Install dependencies to check if a reboot is required after update.
+update_reboot_dependencies_pkgs:
+  - yum-utils
+
+# If set to yes, then only installs updates that have been marked security related.
+update_reboot_redhat_security: no
+
+# If set to yes, dependencies will be removed if they are no longer needed by any other package.
+update_reboot_redhat_autoremove: no
+...
