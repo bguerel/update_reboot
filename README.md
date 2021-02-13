@@ -1,4 +1,4 @@
-![Header](https://raw.githubusercontent.com/bguerel/update_reboot/master/update_reboot.png "Header")
+![Header](https://raw.githubusercontent.com/bguerel/update_reboot/main/update_reboot.png "Header")
 
 [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png?v=103)](https://opensource.org/licenses/OSL-3.0)
 [![Author](https://img.shields.io/badge/Powered%20by-Benhur%20Gürel-blue)](https://github.com/bguerel/bguerel)
