@@ -1,0 +1,84 @@
+---
+- name: Exclude packages from being update.
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  changed_when: false
+  loop: "{{ update_reboot_debian_exclude_pkgs[inventory_hostname] | default([]) }}"
+  tags: [ 'update_reboot' ]
+
+- name: Ensure the updates are installed.
+  apt:
+    name: "*"
+    state: latest
+  register: update_reboot_pkgs
+  tags: [ 'update_reboot' ]
+
+- name: Ensure remove unused dependency packages.
+  apt:
+    autoremove: yes
+  tags: [ 'update_reboot' ]
+
+- name: Ensure that the local repository is cleaned up.
+  apt:
+    autoclean: yes
+  tags: [ 'update_reboot' ]
+
+- name: List installed/upgrade/remove packages.
+  shell: >
+    grep -E "^$(date +%Y-%m-%d).+ (install|upgrade|remove)"
+    /var/log/dpkg.log | sort -n
+  args:
+    executable: /bin/bash
+  when: >
+    update_reboot_pkgs is changed
+    and update_reboot_log_enable | bool
+  register: update_reboot_pkgs_logs
+  tags: [ 'update_reboot' ]
+
+- import_tasks: logging.yml
+  when: >
+    update_reboot_pkgs_logs is changed
+    and update_reboot_log_enable | bool
+  tags: [ 'update_reboot' ]
+
+- name: Remove excluded packages.
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  changed_when: false
+  loop: "{{ update_reboot_debian_exclude_pkgs[inventory_hostname] | default([]) }}"
+  tags: [ 'update_reboot' ]
+
+- name: Ensure if service restart is required.
+  command: needrestart -b
+  failed_when: false
+  changed_when: false
+  register: update_reboot_service_restart_required
+  tags: [ 'update_reboot' ]
+
+- name: Ensure the service are restarted.
+  command: needrestart -u NeedRestart::UI::stdio -r a
+  failed_when: false
+  changed_when: false
+  when: "'NEEDRESTART-KSTA: 3' in update_reboot_service_restart_required.stdout_lines"
+  tags: [ 'update_reboot' ]
+
+- name: Ensure a new kernel has been installed.
+  command: needrestart -p -k
+  failed_when: false
+  changed_when: false
+  register: update_reboot_required
+  tags: [ 'update_reboot' ]
+
+- debug:
+    msg: reboot is required
+  changed_when: true
+  when: >
+    update_reboot_required.rc != 0
+    and update_reboot_required_enable | bool
+  notify:
+    - Ensure the node reboots.
+    - Node coming back from reboot.
+  tags: [ 'update_reboot', 'molecule-notest' ]
+...

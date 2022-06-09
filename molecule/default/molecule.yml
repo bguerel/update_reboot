@@ -1,0 +1,35 @@
+---
+# https://molecule.readthedocs.io/en/latest/configuration.html
+dependency:
+  name: galaxy
+driver:
+  #name: podman
+  name: docker
+platforms:
+  - name: instance
+    image: bguerel/${MOLECULE_DISTRO:-rockylinux8}-ansible:latest
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency #
+    - syntax
+    - create
+    - prepare #
+    - converge
+    - idempotence
+    - side_effect #
+    - verify
+    - destroy
+verifier:
+  name: ansible
+...

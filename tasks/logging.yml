@@ -1,0 +1,26 @@
+---
+- name: Ensure the log directory exists.
+  stat:
+    path: "{{ update_reboot_log_directory }}"
+  become: false
+  delegate_to: localhost
+  register: update_reboot_check_directory
+  tags: [ 'update_reboot' ]
+
+- name: Creates a log directory.
+  file:
+    path: "{{ update_reboot_log_directory }}"
+    state: directory
+  when: not update_reboot_check_directory.stat.exists
+  become: false
+  delegate_to: localhost
+  tags: [ 'update_reboot' ]
+
+- name: Create the log file for the updated packages.
+  ansible.builtin.copy:
+    content: "{{ update_reboot_pkgs_logs.stdout_lines | join('\n') }}"
+    dest: "{{ update_reboot_log_directory }}/{{ inventory_hostname }}_{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.log"
+  become: false
+  delegate_to: localhost
+  tags: [ 'update_reboot' ]
+...

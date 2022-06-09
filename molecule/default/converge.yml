@@ -1,0 +1,20 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Make sure required packages are installed.
+      block:
+        - apt:
+            update_cache: true
+        - apt:
+            name: "{{ item }}"
+            state: present
+          with_items:
+            - needrestart
+      when: ansible_os_family == 'Debian'
+
+  roles:
+    - role: update_reboot
+...

@@ -1,0 +1,5 @@
+---
+# Install dependencies to check if a reboot is required after update.
+update_reboot_dependencies_pkgs:
+  - yum-utils
+...

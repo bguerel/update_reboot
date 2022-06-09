@@ -1,0 +1,9 @@
+---
+- name: Ensure the dependencies are installed.
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ update_reboot_dependencies_pkgs | flatten(levels=1) | default([]) }}"
+  when: update_reboot_install_pkgs | bool
+  tags: [ 'update_reboot', 'setup_pkgs' ]
+...

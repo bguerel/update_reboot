@@ -1,0 +1,41 @@
+---
+# Install dependencies
+update_reboot_install_pkgs: true
+
+# Enable the logging of installation packages.
+update_reboot_log_enable: true
+
+# Directory for log files.
+update_reboot_log_directory: $HOME/.ansible/logs/UPDATE
+
+# Enable the required reboot check after the update.
+update_reboot_required_enable: true
+
+# Maximum seconds to wait for a successful connection to the managed hosts before trying again.
+update_reboot_connect_timeout: 5
+
+# Maximum seconds to wait for machine to reboot and respond to a test command.
+update_reboot_timeout: 7200
+
+# Seconds to wait after the reboot command was successful before attempting to validate the system rebooted successfully.
+update_reboot_post_delay: 10
+
+# Seconds to wait before reboot.
+update_reboot_pre_delay: 5
+
+# Command to run on the rebooted host and expect success from to determine the machine is ready for further tasks.
+update_reboot_test_command: "uptime"
+
+# Exclude packages on certain nodes from update. (RedHat)
+update_reboot_redhat_exclude_pkgs:
+  example-redhat-01v:
+    - nginx
+    - mariadb-server
+    - php-fpm
+
+# Exclude packages on certain nodes from update. (Debian)
+update_reboot_debian_exclude_pkgs: []
+
+# Exclude packages on certain nodes from update. (Suse)
+update_reboot_suse_exclude_pkgs: []
+...

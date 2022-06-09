@@ -1,0 +1,57 @@
+---
+- name: Ensure the updates are installed.
+  yum:
+    name: "*"
+    update_cache: yes
+    exclude: "{{ update_reboot_redhat_exclude_pkgs[inventory_hostname] | default([]) }}"
+    state: latest
+  register: update_reboot_pkgs
+  tags: [ 'update_reboot' ]
+
+- name: Ensure remove unused dependency packages.
+  yum:
+    autoremove: yes
+  tags: [ 'update_reboot' ]
+
+- name: Ensure that the cache is cleared.
+  shell: yum clean all
+  tags: [ 'update_reboot', 'molecule-notest' ]
+
+- name: List installed packages.
+  shell: >
+    rpm -qa --qf '(%{INSTALLTIME:date}):
+    %{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n'
+    | grep "$(date +%a\ %d\ %b\ %Y)" | sort -n
+  args:
+    executable: /bin/bash
+  when: >
+    update_reboot_pkgs is changed
+    and update_reboot_log_enable | bool
+  changed_when: false
+  register: update_reboot_pkgs_logs
+  tags: [ 'update_reboot' ]
+
+- import_tasks: logging.yml
+  when: >
+    update_reboot_pkgs_logs is changed
+    and update_reboot_log_enable | bool
+  tags: [ 'update_reboot' ]
+
+- name: Ensure if a reboot is required.
+  command: needs-restarting -r
+  failed_when: false
+  changed_when: false
+  register: update_reboot_required
+  tags: [ 'update_reboot' ]
+
+- debug:
+    msg: reboot is required
+  changed_when: true
+  when: >
+    update_reboot_required.rc != 0
+    and update_reboot_required_enable | bool
+  notify:
+    - Ensure the node reboots.
+    - Node coming back from reboot.
+  tags: [ 'update_reboot' ]
+...

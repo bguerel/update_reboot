@@ -1,0 +1,19 @@
+---
+- name: Ensure the node reboots.
+  reboot:
+    connect_timeout: "{{ update_reboot_connect_timeout | default('5') }}"
+    reboot_timeout: "{{ update_reboot_timeout | default('7200') }}"
+    post_reboot_delay: "{{ update_reboot_post_delay | default('10') }}"
+    pre_reboot_delay: "{{ update_reboot_pre_delay | default('5') }}"
+    test_command: "{{ update_reboot_test_command | default(omit) }}"
+  register: update_reboot_results
+
+- name: Node coming back from reboot.
+  debug:
+    msg: >
+     {% if update_reboot_results['rebooted'] | default(False) %}
+     <{{ ansible_hostname | default(inventory_hostname, True) }}> has been successfully rebooted!
+     {% else %}
+     was not rebooted! <{{ ansible_hostname }}>
+     {% endif %}
+...
