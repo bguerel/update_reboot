@@ -2,6 +2,7 @@
 
 [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png?v=103)](https://opensource.org/licenses/OSL-3.0)
 [![Author](https://img.shields.io/badge/Powered%20by-Benhur%20Gürel-blue)](https://github.com/bguerel/bguerel)
+[![CI](https://github.com/bguerel/update_reboot/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/bguerel/update_reboot/actions?query=workflow%3ACI)
 [![Ansible Galaxy Downloads](https://img.shields.io/ansible/role/d/53007?color=blue&label=Galaxy%20Downloads&logo=Ansible)](https://galaxy.ansible.com/bguerel/update_reboot)
 [![Version](https://img.shields.io/github/v/release/bguerel/update_reboot?label=update_reboot&logo=Ansible)](https://github.com/bguerel/update_reboot/releases)
 
@@ -29,7 +30,7 @@ Installation
 
 - [x] git
 
-Use `git clone git@**********/update_reboot.git` to pull the latest edge commit of the role from git.
+Use `git@github.com:bguerel/update_reboot.git` to pull the latest edge commit of the role from git.
 
 Platforms
 ---------

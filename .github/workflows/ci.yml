@@ -43,6 +43,8 @@ jobs:
     strategy:
       matrix:
         distro:
+          - centos8
+          - centos7
           - rockylinux8
           - almalinux8
           - ubuntu2204
