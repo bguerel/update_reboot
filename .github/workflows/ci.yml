@@ -27,12 +27,12 @@ jobs:
           path: 'update_reboot'
 
       - name: 🐍 Set up Python.
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: 🔧 Install dependencies.
-        run: python3 -m pip install yamllint
+        run: pip install --user yamllint
 
       - name: 🧐 Lint
         run: yamllint .
@@ -43,14 +43,10 @@ jobs:
     strategy:
       matrix:
         distro:
-          - centos8
-          - centos7
+          - rockylinux9
           - rockylinux8
-          - almalinux8
           - ubuntu2204
           - ubuntu2004
-          - debian11
-          - debian10
 
     steps:
       - name: 🛎 Checkout codebase.
@@ -59,12 +55,12 @@ jobs:
           path: 'update_reboot'
 
       - name: 🐍 Set up Python.
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: 🔧 Install dependencies.
-        run: pip3 install ansible molecule[docker] docker yamllint ansible-lint
+        run: pip install --user ansible molecule molecule-plugins[docker] docker
 
       - name: 🧪 Run Molecule test.
         run: molecule test
@@ -86,12 +82,12 @@ jobs:
           path: 'update_reboot'
 
       - name: 🐍 Set up Python.
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: 🔧 Install dependencies.
-        run: pip3 install ansible-core
+        run: pip install --user ansible-core
 
       - name: ✔️ Trigger a new import on Galaxy.
         run: >-
