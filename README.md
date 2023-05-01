@@ -38,6 +38,7 @@ Platforms
 ```yaml
 EL:
   versions:
+    - 9
     - 8
     - 7
 Fedora:
@@ -50,6 +51,7 @@ Debian:
     - Stretch
 Ubuntu:
   versions:
+    - Jammy
     - Focal
     - Bionic
 SLES:
